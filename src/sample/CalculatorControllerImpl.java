@@ -8,7 +8,7 @@ public class CalculatorControllerImpl implements CalculatorMVC.Controller {
 
     private CalculatorMVC.View view;
     private CalculatorTextFieldGenerator textFieldGenerator = new CalculatorTextFieldGenerator();
-    private HistoryTextGenerator historyTextGenerator = new HistoryTextGenerator();
+    private HistoryTextGenerator historyTextGenerator = new HistoryTextGenerator(textFieldGenerator);
     private Operation operation = Operation.EMPTY;
     private CurrentInputState inputState = CurrentInputState.INPUT_NOT_PROVIDED;
     private boolean firstOperation = true;
@@ -34,6 +34,14 @@ public class CalculatorControllerImpl implements CalculatorMVC.Controller {
 
     @Override
     public void plus() {
+        if(inputState.equals(CurrentInputState.INPUT_PROVIDED)){
+            historyTextGenerator.updateHistory();
+            historyTextGenerator.updateHistory("+");
+            updateHistoryText();
+        }
+        if(afterEqualsOperation){
+            historyTextGenerator.updateHistory("+");
+        }
         if (firstOperation && inputState.equals(CurrentInputState.INPUT_PROVIDED)) {
             currentResult = Double.parseDouble(textFieldGenerator.getStringBuilder().toString());
             firstOperation = false;
@@ -52,6 +60,7 @@ public class CalculatorControllerImpl implements CalculatorMVC.Controller {
         }
 
         operation = Operation.ADD;
+        inputState=CurrentInputState.INPUT_NOT_PROVIDED;
         textFieldGenerator.clearStringBuilder();
         showResult();
 
@@ -59,6 +68,14 @@ public class CalculatorControllerImpl implements CalculatorMVC.Controller {
 
     @Override
     public void minus() {
+        if(inputState.equals(CurrentInputState.INPUT_PROVIDED)){
+            historyTextGenerator.updateHistory();
+            historyTextGenerator.updateHistory("-");
+            updateHistoryText();
+        }
+        if(afterEqualsOperation){
+            historyTextGenerator.updateHistory("-");
+        }
         if (firstOperation && !textFieldGenerator.getStringBuilder().toString().equals("") && inputState.equals(CurrentInputState.INPUT_PROVIDED)) {
             currentResult = Double.parseDouble(textFieldGenerator.getStringBuilder().toString());
             firstOperation = false;
@@ -76,6 +93,7 @@ public class CalculatorControllerImpl implements CalculatorMVC.Controller {
             }
         }
         operation = Operation.SUBTRACT;
+        inputState=CurrentInputState.INPUT_NOT_PROVIDED;
         textFieldGenerator.clearStringBuilder();
         showResult();
 
@@ -84,6 +102,14 @@ public class CalculatorControllerImpl implements CalculatorMVC.Controller {
 
     @Override
     public void multiply() {
+        if(inputState.equals(CurrentInputState.INPUT_PROVIDED)){
+            historyTextGenerator.updateHistory();
+            historyTextGenerator.updateHistory("*");
+            updateHistoryText();
+        }
+        if(afterEqualsOperation){
+            historyTextGenerator.updateHistory("*");
+        }
         if (firstOperation && !textFieldGenerator.getStringBuilder().toString().equals("") && inputState.equals(CurrentInputState.INPUT_PROVIDED)) {
             currentResult = Double.parseDouble(textFieldGenerator.getStringBuilder().toString());
             firstOperation = false;
@@ -100,6 +126,7 @@ public class CalculatorControllerImpl implements CalculatorMVC.Controller {
             }
         }
         operation = Operation.MULTIPLY;
+        inputState=CurrentInputState.INPUT_NOT_PROVIDED;
         textFieldGenerator.clearStringBuilder();
         showResult();
 
@@ -107,6 +134,14 @@ public class CalculatorControllerImpl implements CalculatorMVC.Controller {
 
     @Override
     public void divide() {
+        if(inputState.equals(CurrentInputState.INPUT_PROVIDED)){
+            historyTextGenerator.updateHistory();
+            historyTextGenerator.updateHistory("/");
+            updateHistoryText();
+        }
+        if(afterEqualsOperation){
+            historyTextGenerator.updateHistory("/");
+        }
         if (firstOperation && !textFieldGenerator.getStringBuilder().toString().equals("") && inputState.equals(CurrentInputState.INPUT_PROVIDED)) {
             currentResult = Double.parseDouble(textFieldGenerator.getStringBuilder().toString());
             firstOperation = false;
@@ -124,6 +159,7 @@ public class CalculatorControllerImpl implements CalculatorMVC.Controller {
             }
         }
         operation = Operation.DEVIDE;
+        inputState=CurrentInputState.INPUT_NOT_PROVIDED;
         textFieldGenerator.clearStringBuilder();
         showResult();
     }
@@ -138,7 +174,6 @@ public class CalculatorControllerImpl implements CalculatorMVC.Controller {
             operation = Operation.SQRT;
             setTempNumber();
             currentResult = tempNumber;
-          //  inputState = CurrentInputState.INPUT_PROVIDED;
             lastResult = currentResult;
             resultsQueue.add(lastResult);
             currentResult = Math.sqrt(currentResult);
@@ -161,7 +196,6 @@ public class CalculatorControllerImpl implements CalculatorMVC.Controller {
             lastResult = currentResult;
             resultsQueue.add(lastResult);
             currentResult = Math.sqrt(currentResult);
-          //  inputState = CurrentInputState.INPUT_PROVIDED;
             textFieldGenerator.setStringBuilder(currentResult);
             showResult();
         }
@@ -170,11 +204,22 @@ public class CalculatorControllerImpl implements CalculatorMVC.Controller {
 
     @Override
     public void typeEquals() {
+        if(inputState.equals(CurrentInputState.INPUT_PROVIDED)&&!afterEqualsOperation){
+//            historyTextGenerator.updateHistory();
+//            historyTextGenerator.updateHistory("+");
+//            updateHistoryText();
+        }
         if (operation != null && inputState.equals(CurrentInputState.INPUT_PROVIDED)) {
+
             afterEqualsOperation = true;
             inputState = CurrentInputState.INPUT_NOT_PROVIDED;
             setTempNumber();
             setCurrentResult();
+            historyTextGenerator.updateHistory();
+            historyTextGenerator.updateHistory("=");
+            historyTextGenerator.updateHistory(String.valueOf(currentResult));
+            historyTextGenerator.newLine();
+            updateHistoryText();
             showResult();
             setTempNumber(0);
         }
@@ -223,6 +268,7 @@ public class CalculatorControllerImpl implements CalculatorMVC.Controller {
     }
 
     private void setCurrentResult() {
+
         if (operation.equals(Operation.ADD)) {
             lastResult = currentResult;
             currentResult += tempNumber;
@@ -252,10 +298,10 @@ public class CalculatorControllerImpl implements CalculatorMVC.Controller {
     public void typeOne() {
         if (!operation.equals(Operation.SQRT)) {
             textFieldGenerator.updateTextField("1");
-            //   historyTextGenerator.updateHistory("1");
+           // historyTextGenerator.updateHistory("1");
             inputState = CurrentInputState.INPUT_PROVIDED;
             addNumberToTextField();
-//        updateHistoryText();
+          //  updateHistoryText();
         }
     }
 
@@ -263,10 +309,10 @@ public class CalculatorControllerImpl implements CalculatorMVC.Controller {
     public void typeTwo() {
         if (!operation.equals(Operation.SQRT)) {
             textFieldGenerator.updateTextField("2");
-            //   historyTextGenerator.updateHistory("2");
+           // historyTextGenerator.updateHistory("2");
             inputState = CurrentInputState.INPUT_PROVIDED;
             addNumberToTextField();
-//        updateHistoryText();
+           // updateHistoryText();
         }
     }
 
@@ -274,10 +320,10 @@ public class CalculatorControllerImpl implements CalculatorMVC.Controller {
     public void typeThree() {
         if (!operation.equals(Operation.SQRT)) {
             textFieldGenerator.updateTextField("3");
-            //   historyTextGenerator.updateHistory("3");
+          //  historyTextGenerator.updateHistory("3");
             inputState = CurrentInputState.INPUT_PROVIDED;
             addNumberToTextField();
-            //  updateHistoryText();
+         //   updateHistoryText();
         }
     }
 
@@ -285,10 +331,10 @@ public class CalculatorControllerImpl implements CalculatorMVC.Controller {
     public void typeFour() {
         if (!operation.equals(Operation.SQRT)) {
             textFieldGenerator.updateTextField("4");
-            //   historyTextGenerator.updateHistory("4");
+           // historyTextGenerator.updateHistory("4");
             inputState = CurrentInputState.INPUT_PROVIDED;
             addNumberToTextField();
-            //  updateHistoryText();
+           // updateHistoryText();
 
         }
     }
@@ -297,10 +343,10 @@ public class CalculatorControllerImpl implements CalculatorMVC.Controller {
     public void typeFive() {
         if (!operation.equals(Operation.SQRT)) {
             textFieldGenerator.updateTextField("5");
-            //   historyTextGenerator.updateHistory("5");
+           // historyTextGenerator.updateHistory("5");
             inputState = CurrentInputState.INPUT_PROVIDED;
             addNumberToTextField();
-            // updateHistoryText();
+           // updateHistoryText();
         }
     }
 
@@ -308,10 +354,10 @@ public class CalculatorControllerImpl implements CalculatorMVC.Controller {
     public void typeSix() {
         if (!operation.equals(Operation.SQRT)) {
             textFieldGenerator.updateTextField("6");
-            //   historyTextGenerator.updateHistory("6");
+          //  historyTextGenerator.updateHistory("6");
             inputState = CurrentInputState.INPUT_PROVIDED;
             addNumberToTextField();
-            // updateHistoryText();
+           // updateHistoryText();
         }
     }
 
@@ -319,10 +365,10 @@ public class CalculatorControllerImpl implements CalculatorMVC.Controller {
     public void typeSeven() {
         if (!operation.equals(operation.SQRT)) {
             textFieldGenerator.updateTextField("7");
-            //  historyTextGenerator.updateHistory("7");
+          //  historyTextGenerator.updateHistory("7");
             inputState = CurrentInputState.INPUT_PROVIDED;
             addNumberToTextField();
-            // updateHistoryText();
+          //  updateHistoryText();
         }
     }
 
@@ -333,7 +379,7 @@ public class CalculatorControllerImpl implements CalculatorMVC.Controller {
             //  historyTextGenerator.updateHistory("8");
             inputState = CurrentInputState.INPUT_PROVIDED;
             addNumberToTextField();
-            //  updateHistoryText();
+         //   updateHistoryText();
         }
     }
 
@@ -341,10 +387,10 @@ public class CalculatorControllerImpl implements CalculatorMVC.Controller {
     public void typeNine() {
         if (!operation.equals(Operation.SQRT)) {
             textFieldGenerator.updateTextField("9");
-            // historyTextGenerator.updateHistory("9");
+          //  historyTextGenerator.updateHistory("9");
             inputState = CurrentInputState.INPUT_PROVIDED;
             addNumberToTextField();
-            //    updateHistoryText();
+           // updateHistoryText();
         }
     }
 
@@ -352,10 +398,10 @@ public class CalculatorControllerImpl implements CalculatorMVC.Controller {
     public void typeZero() {
         if (!operation.equals(Operation.SQRT)) {
             textFieldGenerator.updateTextField("0");
-            historyTextGenerator.updateHistory("0");
+          //  historyTextGenerator.updateHistory("0");
             inputState = CurrentInputState.INPUT_PROVIDED;
             addNumberToTextField();
-            //   updateHistoryText();
+          //  updateHistoryText();
         }
     }
 
@@ -370,7 +416,7 @@ public class CalculatorControllerImpl implements CalculatorMVC.Controller {
         currentResult = 0;
         tempNumber = 0;
         textFieldGenerator.clearStringBuilder();
-        //historyTextGenerator.setStringBuilder(new StringBuilder());
+        historyTextGenerator.setStringBuilder(new StringBuilder());
         resultsQueue = new ArrayList<>();
     }
 

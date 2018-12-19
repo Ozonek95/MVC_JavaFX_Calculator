@@ -3,8 +3,17 @@ package sample;
 public class HistoryTextGenerator {
     private StringBuilder stringBuilder = new StringBuilder();
 
-    public void updateHistory(String text){
-        stringBuilder.append(text);
+    private  CalculatorTextFieldGenerator textGenerator;
+
+    public HistoryTextGenerator(CalculatorTextFieldGenerator textGenerator) {
+        this.textGenerator = textGenerator;
+    }
+
+    public void updateHistory(){
+        stringBuilder.append(textGenerator.getStringBuilder().toString());
+    }
+    public void updateHistory(String value){
+        stringBuilder.append(value);
     }
 
     public StringBuilder getStringBuilder() {
@@ -16,6 +25,6 @@ public class HistoryTextGenerator {
     }
 
     public void newLine() {
-        stringBuilder.append(System.getProperty("line.separator"));
+        stringBuilder.append("\r\n");
     }
 }

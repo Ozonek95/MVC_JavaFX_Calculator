@@ -1,35 +1,48 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
+<?import java.net.*?>
+<?import javafx.scene.control.*?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.*?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="479.0" prefWidth="539.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.CalculatorView">
-   <children>
-      <Button fx:id="number_two" layoutX="246.0" layoutY="200.0" mnemonicParsing="false" onMouseClicked="#clickTwo" text="2" />
-      <Button fx:id="number_five" layoutX="246.0" layoutY="254.0" mnemonicParsing="false" onMouseClicked="#clickFive" text="5" />
-      <Button fx:id="number_four" layoutX="137.0" layoutY="254.0" mnemonicParsing="false" onMouseClicked="#clickFour" text="4" />
-      <Button fx:id="number_one" layoutX="137.0" layoutY="200.0" mnemonicParsing="false" onMouseClicked="#clickOne" text="1" />
-      <Button fx:id="number_three" layoutX="353.0" layoutY="200.0" mnemonicParsing="false" onMouseClicked="#clickThree" text="3" />
-      <Button fx:id="number_six" layoutX="353.0" layoutY="254.0" mnemonicParsing="false" onMouseClicked="#clickSix" text="6" />
-      <Button fx:id="number_seven" layoutX="137.0" layoutY="317.0" mnemonicParsing="false" onMouseClicked="#clickSeven" text="7" />
-      <Button fx:id="number_eight" layoutX="246.0" layoutY="317.0" mnemonicParsing="false" onMouseClicked="#clickEight" text="8" />
-      <Button fx:id="number_nine" layoutX="353.0" layoutY="317.0" mnemonicParsing="false" onMouseClicked="#clickNine" text="9" />
-      <TextField fx:id="display_textfield" layoutX="167.0" layoutY="106.0" text="00.0" />
-      <Button layoutX="413.0" layoutY="200.0" minWidth="-Infinity" mnemonicParsing="false" onAction="#clickSubtract" prefHeight="31.0" prefWidth="40.0" text="-" />
-      <Button layoutX="414.0" layoutY="254.0" mnemonicParsing="false" onAction="#clickAdd" prefHeight="31.0" prefWidth="40.0" text="+" />
-      <Button layoutX="439.0" layoutY="371.0" mnemonicParsing="false" onMouseClicked="#clickSqrt" text="sqrt" />
-      <Button fx:id="number_zero" layoutX="246.0" layoutY="364.0" mnemonicParsing="false" onMouseClicked="#clickZero" text="0" />
-      <Button layoutX="421.0" layoutY="317.0" mnemonicParsing="false" onAction="#clickMultiply" text="*" />
-      <Button layoutX="401.0" layoutY="137.0" mnemonicParsing="false" onAction="#clickEquals" text="=" />
-      <Button layoutX="38.0" layoutY="137.0" mnemonicParsing="false" onAction="#clickClear" text="Clear" />
-      <TextArea fx:id="history_text_area" layoutX="14.0" layoutY="14.0" prefHeight="90.0" prefWidth="200.0" />
-      <Label layoutX="235.0" layoutY="49.0" text="History" />
-      <Button layoutX="355.0" layoutY="364.0" mnemonicParsing="false" onMouseClicked="#dot" text="." />
-      <Button layoutX="447.0" layoutY="137.0" mnemonicParsing="false" onMouseClicked="#deleteLastNumber" text="C" />
-      <Button layoutX="381.0" layoutY="75.0" mnemonicParsing="false" onMouseClicked="#previous" text="PREV" />
-      <Button layoutX="471.0" layoutY="203.0" mnemonicParsing="false" onMouseClicked="#clickDivide" text="/" />
-   </children>
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="465.0" prefWidth="525.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="sample.CalculatorView">
+  <children>
+    <Button fx:id="number_two" layoutX="217.0" layoutY="200.0" mnemonicParsing="false" onMouseClicked="#clickTwo" prefHeight="40.0" prefWidth="40.0" text="2" />
+    <Button fx:id="number_five" layoutX="217.0" layoutY="253.0" mnemonicParsing="false" onMouseClicked="#clickFive" prefHeight="40.0" prefWidth="40.0" text="5" />
+    <Button fx:id="number_four" layoutX="137.0" layoutY="254.0" mnemonicParsing="false" onMouseClicked="#clickFour" prefHeight="40.0" prefWidth="40.0" text="4" />
+    <Button fx:id="number_one" layoutX="137.0" layoutY="200.0" mnemonicParsing="false" onMouseClicked="#clickOne" prefHeight="40.0" prefWidth="40.0" text="1" />
+    <Button fx:id="number_three" layoutX="286.0" layoutY="200.0" mnemonicParsing="false" onMouseClicked="#clickThree" prefHeight="40.0" prefWidth="40.0" text="3" />
+    <Button fx:id="number_six" layoutX="286.0" layoutY="253.0" mnemonicParsing="false" onMouseClicked="#clickSix" prefHeight="40.0" prefWidth="40.0" text="6" />
+    <Button fx:id="number_seven" layoutX="137.0" layoutY="317.0" mnemonicParsing="false" onMouseClicked="#clickSeven" prefHeight="40.0" prefWidth="40.0" text="7" />
+    <Button fx:id="number_eight" layoutX="217.0" layoutY="317.0" mnemonicParsing="false" onMouseClicked="#clickEight" prefHeight="40.0" prefWidth="40.0" text="8" />
+    <Button fx:id="number_nine" layoutX="286.0" layoutY="317.0" mnemonicParsing="false" onMouseClicked="#clickNine" prefHeight="40.0" prefWidth="40.0" text="9" />
+    <TextField fx:id="display_textfield" layoutX="182.0" layoutY="137.0" prefHeight="31.0" prefWidth="149.5078125" text="00.0" />
+    <Button layoutX="355.0" layoutY="203.0" minHeight="18.0" minWidth="-Infinity" mnemonicParsing="false" onAction="#clickSubtract" prefHeight="40.0" prefWidth="40.0" text="-" />
+    <Button layoutX="355.0" layoutY="254.0" mnemonicParsing="false" onAction="#clickAdd" prefHeight="40.0" prefWidth="40.0" text="+" />
+    <Button layoutX="137.0" layoutY="371.0" mnemonicParsing="false" onMouseClicked="#clickSqrt" prefHeight="40.0" prefWidth="60.0" text="sqrt" />
+    <Button fx:id="number_zero" layoutX="217.0" layoutY="371.0" mnemonicParsing="false" onMouseClicked="#clickZero" prefHeight="40.0" prefWidth="40.0" text="0" />
+    <Button layoutX="355.0" layoutY="317.0" mnemonicParsing="false" onAction="#clickMultiply" prefHeight="40.0" prefWidth="40.0" text="*" />
+    <Button layoutX="355.0" layoutY="138.0" minHeight="15.9609375" mnemonicParsing="false" onAction="#clickEquals" prefHeight="40.0" prefWidth="40.0" text="=" />
+    <Button layoutX="50.0" layoutY="200.0" mnemonicParsing="false" onAction="#clickClear" prefHeight="40.0" prefWidth="60.0" text="Clear" />
+    <TextArea id="text_area" fx:id="history_text_area" blendMode="SRC_OVER" cache="true" cacheHint="QUALITY" depthTest="DISABLE" layoutX="10.0" layoutY="10.0" mouseTransparent="false" pickOnBounds="false" prefHeight="115.0" prefWidth="200.0" promptText="History" wrapText="true">
+      <stylesheets>
+        <URL value="@." />
+      </stylesheets>
+    </TextArea>
+    <Label alignment="CENTER" contentDisplay="CENTER" graphicTextGap="4.0" layoutX="235.0" layoutY="49.0" prefHeight="35.0" prefWidth="60.0" text="History" textAlignment="CENTER" underline="false">
+      <font>
+        <Font name="Microsoft Yi Baiti" size="15.0" />
+      </font>
+    </Label>
+    <Button layoutX="286.0" layoutY="371.0" mnemonicParsing="false" onMouseClicked="#dot" prefHeight="40.0" prefWidth="40.0" text="." />
+    <Button layoutX="427.0" layoutY="138.0" mnemonicParsing="false" onMouseClicked="#deleteLastNumber" prefHeight="40.0" prefWidth="40.0" text="C" />
+    <Button layoutX="387.0" layoutY="70.0" maxHeight="40.0" maxWidth="90.0" minHeight="40.0" minWidth="40.0" mnemonicParsing="false" onMouseClicked="#previous" prefHeight="40.0" prefWidth="60.0" text="PREV" />
+    <Button layoutX="355.0" layoutY="371.0" mnemonicParsing="false" onMouseClicked="#clickDivide" prefHeight="40.0" prefWidth="40.0" text="/" />
+  </children>
 </Pane>
