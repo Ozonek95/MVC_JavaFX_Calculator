@@ -79,6 +79,7 @@ public class CalculatorControllerImpl implements CalculatorMVC.Controller {
     private void writeSigntToHistoryAtBeginingOfLineAfterEqualsOperation(String s) {
         if (afterEqualsOperation) {
             historyTextGenerator.updateHistory(s);
+           // historyTextGenerator.addToHistoryArchive();
         }
     }
 
@@ -86,6 +87,7 @@ public class CalculatorControllerImpl implements CalculatorMVC.Controller {
         if (inputState.equals(CurrentInputState.INPUT_PROVIDED)) {
             historyTextGenerator.updateHistory();
             historyTextGenerator.updateHistory(s);
+           // historyTextGenerator.addToHistoryArchive();
             updateHistoryText();
         }
     }
@@ -173,6 +175,7 @@ public class CalculatorControllerImpl implements CalculatorMVC.Controller {
         historyTextGenerator.updateHistory();
         historyTextGenerator.updateHistory("=");
         historyTextGenerator.updateHistory(String.valueOf(currentResult));
+        //historyTextGenerator.addToHistoryArchive();
         historyTextGenerator.newLine();
         updateHistoryText();
         textFieldGenerator.setStringBuilder(0.0);
@@ -207,6 +210,9 @@ public class CalculatorControllerImpl implements CalculatorMVC.Controller {
             resultsQueue.remove(resultsQueue.size() - 1);
             showResult();
         }
+        //historyTextGenerator.setEarlierStringBuilder();
+        historyTextGenerator.deleteLastLine();
+        updateHistoryText();
     }
 
 
