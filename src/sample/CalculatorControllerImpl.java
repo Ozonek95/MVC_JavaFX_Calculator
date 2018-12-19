@@ -34,14 +34,17 @@ public class CalculatorControllerImpl implements CalculatorMVC.Controller {
 
     @Override
     public void plus() {
-        if(inputState.equals(CurrentInputState.INPUT_PROVIDED)){
-            historyTextGenerator.updateHistory();
-            historyTextGenerator.updateHistory("+");
-            updateHistoryText();
-        }
-        if(afterEqualsOperation){
-            historyTextGenerator.updateHistory("+");
-        }
+        writeSignToHistory("+");
+        writeSigntToHistoryAtBeginingOfLineAfterEqualsOperation("+");
+        operate();
+
+        changeCurrentFlags(Operation.ADD);
+        textFieldGenerator.clearStringBuilder();
+        showResult();
+
+    }
+
+    private void operate() {
         if (firstOperation && inputState.equals(CurrentInputState.INPUT_PROVIDED)) {
             currentResult = Double.parseDouble(textFieldGenerator.getStringBuilder().toString());
             firstOperation = false;
@@ -58,75 +61,41 @@ public class CalculatorControllerImpl implements CalculatorMVC.Controller {
         if (afterEqualsOperation) {
             afterEqualsOperation = false;
         }
-
-        operation = Operation.ADD;
-        inputState=CurrentInputState.INPUT_NOT_PROVIDED;
-        textFieldGenerator.clearStringBuilder();
-        showResult();
-
     }
+
 
     @Override
     public void minus() {
-        if(inputState.equals(CurrentInputState.INPUT_PROVIDED)){
-            historyTextGenerator.updateHistory();
-            historyTextGenerator.updateHistory("-");
-            updateHistoryText();
-        }
-        if(afterEqualsOperation){
-            historyTextGenerator.updateHistory("-");
-        }
-        if (firstOperation && !textFieldGenerator.getStringBuilder().toString().equals("") && inputState.equals(CurrentInputState.INPUT_PROVIDED)) {
-            currentResult = Double.parseDouble(textFieldGenerator.getStringBuilder().toString());
-            firstOperation = false;
-        }
-        if (afterEqualsOperation) {
-            afterEqualsOperation = false;
-        } else {
-
-            setTempNumber();
-            if (operation != null) {
-                if (inputState.equals(CurrentInputState.INPUT_PROVIDED)) {
-                    setCurrentResult();
-                    inputState = CurrentInputState.INPUT_NOT_PROVIDED;
-                }
-            }
-        }
-        operation = Operation.SUBTRACT;
-        inputState=CurrentInputState.INPUT_NOT_PROVIDED;
+        writeSignToHistory("-");
+        writeSigntToHistoryAtBeginingOfLineAfterEqualsOperation("-");
+        operate();
+        changeCurrentFlags(Operation.SUBTRACT);
         textFieldGenerator.clearStringBuilder();
         showResult();
 
 
+    }
+
+    private void writeSigntToHistoryAtBeginingOfLineAfterEqualsOperation(String s) {
+        if (afterEqualsOperation) {
+            historyTextGenerator.updateHistory(s);
+        }
+    }
+
+    private void writeSignToHistory(String s) {
+        if (inputState.equals(CurrentInputState.INPUT_PROVIDED)) {
+            historyTextGenerator.updateHistory();
+            historyTextGenerator.updateHistory(s);
+            updateHistoryText();
+        }
     }
 
     @Override
     public void multiply() {
-        if(inputState.equals(CurrentInputState.INPUT_PROVIDED)){
-            historyTextGenerator.updateHistory();
-            historyTextGenerator.updateHistory("*");
-            updateHistoryText();
-        }
-        if(afterEqualsOperation){
-            historyTextGenerator.updateHistory("*");
-        }
-        if (firstOperation && !textFieldGenerator.getStringBuilder().toString().equals("") && inputState.equals(CurrentInputState.INPUT_PROVIDED)) {
-            currentResult = Double.parseDouble(textFieldGenerator.getStringBuilder().toString());
-            firstOperation = false;
-        }
-        if (afterEqualsOperation) {
-            afterEqualsOperation = false;
-        } else {
-            setTempNumber();
-            if (operation != null) {
-                if (inputState.equals(CurrentInputState.INPUT_PROVIDED)) {
-                    setCurrentResult();
-                    inputState = CurrentInputState.INPUT_NOT_PROVIDED;
-                }
-            }
-        }
-        operation = Operation.MULTIPLY;
-        inputState=CurrentInputState.INPUT_NOT_PROVIDED;
+        writeSignToHistory("*");
+        writeSigntToHistoryAtBeginingOfLineAfterEqualsOperation("*");
+        operate();
+        changeCurrentFlags(Operation.MULTIPLY);
         textFieldGenerator.clearStringBuilder();
         showResult();
 
@@ -134,34 +103,17 @@ public class CalculatorControllerImpl implements CalculatorMVC.Controller {
 
     @Override
     public void divide() {
-        if(inputState.equals(CurrentInputState.INPUT_PROVIDED)){
-            historyTextGenerator.updateHistory();
-            historyTextGenerator.updateHistory("/");
-            updateHistoryText();
-        }
-        if(afterEqualsOperation){
-            historyTextGenerator.updateHistory("/");
-        }
-        if (firstOperation && !textFieldGenerator.getStringBuilder().toString().equals("") && inputState.equals(CurrentInputState.INPUT_PROVIDED)) {
-            currentResult = Double.parseDouble(textFieldGenerator.getStringBuilder().toString());
-            firstOperation = false;
-        }
-        if (afterEqualsOperation) {
-            afterEqualsOperation = false;
-        } else {
-
-            setTempNumber();
-            if (operation != null) {
-                if (inputState.equals(CurrentInputState.INPUT_PROVIDED)) {
-                    setCurrentResult();
-                    inputState = CurrentInputState.INPUT_NOT_PROVIDED;
-                }
-            }
-        }
-        operation = Operation.DEVIDE;
-        inputState=CurrentInputState.INPUT_NOT_PROVIDED;
+        writeSignToHistory("/");
+        writeSigntToHistoryAtBeginingOfLineAfterEqualsOperation("/");
+        operate();
+        changeCurrentFlags(Operation.DEVIDE);
         textFieldGenerator.clearStringBuilder();
         showResult();
+    }
+
+    private void changeCurrentFlags(Operation devide) {
+        operation = devide;
+        inputState = CurrentInputState.INPUT_NOT_PROVIDED;
     }
 
     @Override
@@ -204,27 +156,28 @@ public class CalculatorControllerImpl implements CalculatorMVC.Controller {
 
     @Override
     public void typeEquals() {
-        if(inputState.equals(CurrentInputState.INPUT_PROVIDED)&&!afterEqualsOperation){
-//            historyTextGenerator.updateHistory();
-//            historyTextGenerator.updateHistory("+");
-//            updateHistoryText();
-        }
+
         if (operation != null && inputState.equals(CurrentInputState.INPUT_PROVIDED)) {
 
-            afterEqualsOperation = true;
-            inputState = CurrentInputState.INPUT_NOT_PROVIDED;
-            setTempNumber();
-            setCurrentResult();
-            historyTextGenerator.updateHistory();
-            historyTextGenerator.updateHistory("=");
-            historyTextGenerator.updateHistory(String.valueOf(currentResult));
-            historyTextGenerator.newLine();
-            updateHistoryText();
-            showResult();
-            setTempNumber(0);
+            equalsOperations();
         }
 
 
+    }
+
+    private void equalsOperations() {
+        afterEqualsOperation = true;
+        inputState = CurrentInputState.INPUT_NOT_PROVIDED;
+        setTempNumber();
+        setCurrentResult();
+        historyTextGenerator.updateHistory();
+        historyTextGenerator.updateHistory("=");
+        historyTextGenerator.updateHistory(String.valueOf(currentResult));
+        historyTextGenerator.newLine();
+        updateHistoryText();
+        textFieldGenerator.setStringBuilder(0.0);
+        showResult();
+        setTempNumber(0);
     }
 
     @Override
