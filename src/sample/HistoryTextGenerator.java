@@ -28,12 +28,18 @@ public class HistoryTextGenerator {
         return stringBuilder;
     }
     public void deleteLastLine(){
+        String[] strings = stringBuilder.toString().split("\n");
         if (stringBuilder.length() > 0) {
             int last, prev = stringBuilder.length() - 1;
             while ((last = stringBuilder.lastIndexOf("\n", prev)) == prev) { prev = last - 1; }
             if (last >= 0) { stringBuilder.delete(last, stringBuilder.length());
             }
         }
+
+        if(strings.length==1){
+            setStringBuilder(new StringBuilder());
+        }
+
 
     }
 

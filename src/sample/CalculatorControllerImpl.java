@@ -210,6 +210,9 @@ public class CalculatorControllerImpl implements CalculatorMVC.Controller {
             resultsQueue.remove(resultsQueue.size() - 1);
             showResult();
         }
+        if(resultsQueue.size()==0){
+            textFieldGenerator.clearStringBuilder();
+        }
         //historyTextGenerator.setEarlierStringBuilder();
         historyTextGenerator.deleteLastLine();
         updateHistoryText();
