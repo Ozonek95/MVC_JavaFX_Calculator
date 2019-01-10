@@ -18,6 +18,10 @@ public class CalculatorTextFieldGenerator {
         clearStringBuilder();
         stringBuilder.append(value);
     }
+    public void setStringBuilder(String value) {
+        clearStringBuilder();
+        stringBuilder.append(value);
+    }
 
     public void deleteLastChar(){
         if(stringBuilder.toString().length()>0){
